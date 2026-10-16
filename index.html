@@ -1,0 +1,1049 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>I Love You ❤️ Every Day</title>
+
+    <style>
+      :root {
+        --pink: #ff4f87;
+        --light-pink: #ffe0eb;
+        --cream: #fff7fa;
+        --red: #b91443;
+        --dark: #40091e;
+        --white: #ffffff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: var(--dark);
+        background:
+          radial-gradient(circle at top left, #ffd4e2, transparent 40%),
+          linear-gradient(135deg, #fff4f8, #ffc4d7, #fff0f5);
+        min-height: 100vh;
+      }
+
+      header {
+        text-align: center;
+        padding: 55px 20px 35px;
+        background: linear-gradient(135deg, #640d30, #bd174d, #ed477b);
+        color: white;
+        position: relative;
+        overflow: hidden;
+      }
+
+      header::before,
+      header::after {
+        content: "♥";
+        position: absolute;
+        font-size: 100px;
+        color: rgba(255, 255, 255, 0.08);
+        pointer-events: none;
+      }
+
+      header::before {
+        top: -15px;
+        left: 5%;
+        transform: rotate(-20deg);
+      }
+
+      header::after {
+        right: 6%;
+        bottom: -35px;
+        transform: rotate(20deg);
+      }
+
+      .eyebrow {
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        font-size: 12px;
+        opacity: 0.9;
+      }
+
+      h1 {
+        font-family: Georgia, serif;
+        font-size: clamp(38px, 7vw, 76px);
+        margin: 15px 0 10px;
+      }
+
+      .subtitle {
+        font-size: clamp(14px, 2.5vw, 19px);
+        line-height: 1.7;
+        margin: 0 auto;
+        max-width: 650px;
+      }
+
+      .heart {
+        color: #ff9cbd;
+      }
+
+      .date-range {
+        display: inline-block;
+        margin-top: 22px;
+        padding: 10px 18px;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 30px;
+        background: rgba(255, 255, 255, 0.12);
+        font-size: 13px;
+      }
+
+      .toolbar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 22px 15px 5px;
+      }
+
+      .toolbar button {
+        padding: 11px 20px;
+        border: 0;
+        border-radius: 25px;
+        background: var(--red);
+        color: white;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: 0.2s;
+      }
+
+      .toolbar button:hover {
+        background: #e72c67;
+        transform: translateY(-2px);
+      }
+
+      .toolbar button:focus-visible {
+        outline: 3px solid var(--pink);
+        outline-offset: 3px;
+      }
+
+      #status {
+        text-align: center;
+        font-size: 13px;
+        color: #84344f;
+        margin: 12px;
+      }
+
+      .calendar-container {
+        max-width: 1500px;
+        margin: 20px auto 50px;
+        padding: 0 18px;
+      }
+
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+      }
+
+      .month {
+        background: var(--white);
+        border: 1px solid #ffc1d4;
+        border-radius: 17px;
+        overflow: hidden;
+        box-shadow: 0 7px 22px rgba(128, 16, 57, 0.11);
+        min-width: 0;
+        transition: transform 0.2s;
+      }
+
+      .month:hover {
+        transform: translateY(-3px);
+      }
+
+      .month-title {
+        text-align: center;
+        color: white;
+        background: linear-gradient(100deg, #7e1039, #d82962);
+        padding: 15px 8px;
+        font-family: Georgia, serif;
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      .weekdays,
+      .days {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+      }
+
+      .weekday {
+        text-align: center;
+        padding: 10px 1px;
+        background: #ffe1eb;
+        color: #82153b;
+        font-size: 11px;
+        font-weight: bold;
+      }
+
+      .day {
+        min-width: 0;
+        min-height: 105px;
+        padding: 7px 3px;
+        background: #fffafb;
+        border: 1px solid #ffe5ed;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 5px;
+        overflow-wrap: anywhere;
+      }
+
+      .day.empty {
+        background: #fff1f5;
+      }
+
+      .day-number {
+        font-size: 13px;
+        font-weight: bold;
+        color: #bc2253;
+      }
+
+      .day-message {
+        font-family: Georgia, serif;
+        font-size: 12px;
+        line-height: 1.3;
+        font-weight: bold;
+        color: #65132f;
+      }
+
+      .day-language {
+        font-size: 10px;
+        color: #a05a70;
+        line-height: 1.2;
+      }
+
+      .day.special {
+        background: linear-gradient(145deg, #ffdfeb, #fff3f7);
+        border-color: #ff9cbd;
+      }
+
+      .day.special .day-number::after {
+        content: " ♥";
+        color: #ff4f87;
+      }
+
+      .day.today {
+        box-shadow: inset 0 0 0 2px #ed3972;
+        background: #ffe0eb;
+      }
+
+      .day.past {
+        background: #fff7fa;
+      }
+
+      .day.future {
+        background: #fffafb;
+      }
+
+      footer {
+        text-align: center;
+        padding: 35px 20px 45px;
+        color: #220000;
+      }
+
+      footer .big-heart {
+        font-size: 32px;
+        color: #86002d;
+      }
+
+      footer h2 {
+        font-family: Georgia, serif;
+        font-size: clamp(25px, 4vw, 38px);
+        margin: 8px 0;
+      }
+
+      footer p {
+        line-height: 1.8;
+      }
+
+      @media (max-width: 1000px) {
+        .calendar-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 600px) {
+        header {
+          padding: 38px 15px 28px;
+        }
+
+        .calendar-container {
+          padding: 0 8px;
+          margin-top: 15px;
+        }
+
+        .calendar-grid {
+          grid-template-columns: 1fr;
+          gap: 17px;
+        }
+
+        .day {
+          min-height: 95px;
+          padding: 8px 2px;
+        }
+
+        .day-message {
+          font-size: 13px;
+        }
+
+        .day-language {
+          font-size: 11px;
+        }
+
+        .weekday {
+          font-size: 12px;
+        }
+
+        .month-title {
+          font-size: 22px;
+        }
+      }
+
+      @media print {
+        body {
+          background: white;
+        }
+
+        header {
+          print-color-adjust: exact;
+          -webkit-print-color-adjust: exact;
+        }
+
+        .toolbar,
+        #status {
+          display: none;
+        }
+
+        .calendar-container {
+          max-width: none;
+          margin: 10px auto;
+          padding: 0;
+        }
+
+        .calendar-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px;
+        }
+
+        .month {
+          break-inside: avoid;
+          box-shadow: none;
+        }
+
+        .day {
+          min-height: 75px;
+        }
+
+        .month-title,
+        .weekday {
+          print-color-adjust: exact;
+          -webkit-print-color-adjust: exact;
+        }
+
+        footer {
+          padding: 15px;
+        }
+      }
+
+      /* 3D LOVE CALENDAR */
+      body {
+        perspective: 1400px;
+        background:
+          radial-gradient(ellipse at 20% 10%, #ffb6d0, transparent 40%),
+          radial-gradient(ellipse at 80% 80%, #e879a7, transparent 40%),
+          linear-gradient(135deg, #4a0929, #a71950, #ffb6d0);
+        background-attachment: fixed;
+      }
+
+      .calendar-container {
+        perspective: 1400px;
+      }
+
+      .calendar-grid {
+        gap: 28px;
+      }
+
+      .month {
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        border-radius: 20px;
+        background: linear-gradient(145deg, #fff, #ffd6e5);
+        box-shadow:
+          0 10px 0 #b42b5c,
+          0 18px 25px rgba(55, 0, 25, 0.3),
+          inset 0 2px 5px white;
+        transform: rotateX(2deg) rotateY(-1deg);
+        transition:
+          transform 0.35s ease,
+          box-shadow 0.35s ease;
+      }
+
+      .month:hover {
+        transform: rotateX(0deg) rotateY(0deg) translateY(-8px) scale(1.015);
+        box-shadow:
+          0 5px 0 #b42b5c,
+          0 25px 40px rgba(55, 0, 25, 0.4),
+          inset 0 2px 5px white;
+      }
+
+      .month-title {
+        background: linear-gradient(135deg, #ff79a8, #b20e4b, #670b35);
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.4);
+      }
+
+      .day {
+        position: relative;
+        border: 1px solid #ffc0d5;
+        background: linear-gradient(145deg, #fff, #ffe4ee);
+        box-shadow:
+          inset 0 1px 2px white,
+          0 2px 0 #f4a0bd;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      .day:not(.empty):hover {
+        z-index: 2;
+        transform: translateY(-4px) scale(1.04);
+        background: linear-gradient(145deg, #fff, #ffb9d2);
+        box-shadow:
+          0 5px 0 #d64d7d,
+          0 9px 14px rgba(115, 0, 40, 0.2);
+      }
+
+      .day.special {
+        background: linear-gradient(145deg, #ffb1cd, #fff0f6);
+        box-shadow:
+          inset 0 2px 5px white,
+          0 3px 0 #e45a8a;
+      }
+
+      header {
+        background: linear-gradient(145deg, #43051f, #a90d49, #ff528b);
+        box-shadow: 0 12px 30px rgba(55, 0, 25, 0.3);
+      }
+
+      h1 {
+        text-shadow:
+          0 3px 0 #a40d43,
+          0 7px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .big-heart {
+        text-shadow: 0 5px 12px rgba(0, 29, 160, 0.979);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          transition: none !important;
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="eyebrow">A little something</div>
+      <h1>I Love You <span class="heart">♥</span></h1>
+      <p class="subtitle">
+        Different languages. Different words.<br />
+        But every single day, the same feeling.
+      </p>
+      <div class="date-range">25 December 2025 — 18 October 2026</div>
+    </header>
+
+    <div class="toolbar">
+      <button id="todayBtn" type="button">♥ Today's Date</button>
+      <button id="printBtn" type="button">Print Calendar</button>
+      <button id="heartBtn" type="button">More Love ♥</button>
+    </div>
+
+    <p id="status" aria-live="polite">
+      Every date holds another way to say I love you.
+    </p>
+
+    <main class="calendar-container">
+      <div id="calendar" class="calendar-grid"></div>
+    </main>
+
+    <footer>
+      <div class="big-heart">♥ ♥ ♥</div>
+      <h2>One heart. A thousand ways to say it.</h2>
+      <p>
+        No matter where we are,<br />
+        no matter what language we speak,<br />
+        <strong>you will always be my favourite person.</strong>
+      </p>
+      <div class="big-heart">I love you, always. ♥</div>
+    </footer>
+
+    <script>
+      "use strict";
+
+      // ates
+      const START_DATE = "2025-12-25";
+      const END_DATE = "2026-10-20";
+
+      const languages = [
+        ["I love you", "English"],
+        ["Te amo", "Spanish"],
+        ["Je t'aime", "French"],
+        ["Ti amo", "Italian"],
+        ["Ich liebe dich", "German"],
+        ["愛してる", "Japanese"],
+        ["사랑해", "Korean"],
+        ["我爱你", "Mandarin Chinese"],
+        ["Я тебя люблю", "Russian"],
+        ["Eu te amo", "Brazilian Portuguese"],
+        ["Ik hou van jou", "Dutch"],
+        ["Jag älskar dig", "Swedish"],
+        ["Jeg elsker deg", "Norwegian"],
+        ["Jeg elsker dig", "Danish"],
+        ["Rakastan sinua", "Finnish"],
+        ["Kocham cię", "Polish"],
+        ["Szeretlek", "Hungarian"],
+        ["Miluji tě", "Czech"],
+        ["Ľúbim ťa", "Slovak"],
+        ["Mahal kita", "Filipino"],
+        ["Volim te", "Croatian"],
+        ["Волим те", "Serbian"],
+        ["Ljubim te", "Slovenian"],
+        ["T'estimo", "Catalan"],
+        ["Ek het jou lief", "Afrikaans"],
+        ["Ngiyakuthanda", "Zulu"],
+        ["Ndiyakuthanda", "Xhosa"],
+        ["Ndinokuda", "Shona"],
+        ["Nakupenda", "Swahili"],
+        ["Ndagukunda", "Kinyarwanda"],
+        ["Seni seviyorum", "Turkish"],
+        ["أحبك", "Arabic"],
+        ["אני אוהב אותך", "Hebrew"],
+        ["دوستت دارم", "Persian"],
+        ["मैं तुमसे प्यार करता हूँ", "Hindi"],
+        ["ਮੈਂ ਤੈਨੂੰ ਪਿਆਰ ਕਰਦਾ ਹਾਂ", "Punjabi"],
+        ["আমি তোমাকে ভালোবাসি", "Bengali"],
+        ["ฉันรักคุณ", "Thai"],
+        ["Anh yêu em", "Vietnamese"],
+        ["Saya cinta kamu", "Indonesian"],
+        ["Te iubesc", "Romanian"],
+        ["Të dua", "Albanian"],
+        ["Обичам те", "Bulgarian"],
+        ["Σε αγαπώ", "Greek"],
+        ["Aš tave myliu", "Lithuanian"],
+        ["Es tevi mīlu", "Latvian"],
+        ["Ma armastan sind", "Estonian"],
+        ["Ég elska þig", "Icelandic"],
+        ["Mi amas vin", "Esperanto"],
+        ["Ik hâld fan dy", "West Frisian"],
+        ["Tá grá agam duit", "Irish"],
+        ["Tha gaol agam ort", "Scottish Gaelic"],
+        ["Rwy'n dy garu di", "Welsh"],
+        ["Inħobbok", "Maltese"],
+        ["Kuv hlub koj", "Hmong"],
+        ["Aroha ahau ki a koe", "Māori"],
+        ["Ou te alofa ia te oe", "Samoan"],
+        ["Aloha wau iā ʻoe", "Hawaiian"],
+        ["Mi laikim yu", "Tok Pisin"],
+        ["Ke a go rata", "Sesotho"],
+        ["Ndza ku rhand­za", "Tsonga"],
+        ["Gihigugma tika", "Cebuano"],
+        ["Palangga ta ka", "Hiligaynon"],
+        ["Ayayatenka", "Ilocano"],
+        ["Nenu ninnu premistunnanu", "Telugu"],
+        ["Naan unnai kaadhalikkiren", "Tamil"],
+        ["Naanu ninnannu preetisuttēne", "Kannada"],
+        ["Njan ninne snehikkunnu", "Malayalam"],
+        ["Mu tumaku bhala pae", "Odia"],
+        ["હું તને પ્રેમ કરું છું", "Gujarati"],
+        ["मी तुझ्यावर प्रेम करतो", "Marathi"],
+        ["Ez te hez dikim", "Kurdish"],
+        ["Ман туро дӯст медорам", "Tajik"],
+        ["Men seni sevaman", "Uzbek"],
+        ["Мен сені сүйемін", "Kazakh"],
+        ["Мен сени сүйөм", "Kyrgyz"],
+        ["Men seni söýýärin", "Turkmen"],
+        ["Mən səni sevirəm", "Azerbaijani"],
+        ["Ես քեզ սիրում եմ", "Armenian"],
+        ["მე შენ მიყვარხარ", "Georgian"],
+        ["Мин сине яратам", "Tatar"],
+        ["Мин һине яратам", "Bashkir"],
+        ["Я цябе кахаю", "Belarusian"],
+        ["Я тебе кохаю", "Ukrainian"],
+        ["Te sakam", "Macedonian"],
+        ["Të dua shumë", "Gheg Albanian"],
+        ["Te quiero mucho", "Mexican Spanish"],
+        ["Eu amo-te", "European Portuguese"],
+        ["Je t'adore", "French (affectionate)"],
+        ["Ich hab dich lieb", "German (affectionate)"],
+        ["Ti voglio bene", "Italian (affectionate)"],
+        ["Ik zie je graag", "Flemish"],
+        ["Jag tycker om dig", "Swedish (affectionate)"],
+        ["Jeg er glad i deg", "Norwegian (affectionate)"],
+        ["Mä rakastan sua", "Finnish (colloquial)"],
+        ["Mám tě rád", "Czech (masculine speaker)"],
+        ["Kocham cię bardzo", "Polish (intense)"],
+        ["Te iubesc mult", "Romanian (intense)"],
+        ["Amo-te muito", "Portuguese (intense)"],
+        ["Je t'aime de tout mon cœur", "French (intense)"],
+        ["Ti amo tanto", "Italian (intense)"],
+        ["Ich liebe dich sehr", "German (intense)"],
+        ["Я очень тебя люблю", "Russian (intense)"],
+        ["愛しています", "Japanese (polite)"],
+        ["사랑합니다", "Korean (formal)"],
+        ["我非常爱你", "Chinese (intense)"],
+        ["Mahal na mahal kita", "Tagalog (intense)"],
+        ["Aku cinta padamu", "Malay"],
+        ["Saya sangat mencintaimu", "Indonesian (intense)"],
+        ["ฉันรักคุณมาก", "Thai (intense)"],
+        ["Em yêu anh", "Vietnamese (woman to man)"],
+        ["أحبك كثيرًا", "Modern Standard Arabic (intense)"],
+        ["אני אוהבת אותך", "Hebrew (feminine speaker)"],
+        ["من عاشقتم", "Persian (colloquial)"],
+        ["मैं तुमसे प्यार करती हूँ", "Hindi (feminine speaker)"],
+        ["আমি তোমায় ভালোবাসি", "Bengali (colloquial)"],
+        ["ਮੈਂ ਤੈਨੂੰ ਪਿਆਰ ਕਰਦੀ ਹਾਂ", "Punjabi (feminine speaker)"],
+        ["Ndagukunda cyane", "Kinyarwanda (intense)"],
+        ["Ninakupenda sana", "Swahili (intense)"],
+        ["Ngiyakuthanda kakhulu", "Zulu (intense)"],
+        ["Ndiyakuthanda kakhulu", "Xhosa (intense)"],
+        ["Ndinokuda zvikuru", "Shona (intense)"],
+        ["Kuv hlub koj heev", "Hmong (intense)"],
+        ["মই আপোনাক ভালপাওঁ", "Assamese"],
+        ["Ami tomake bhalobashi", "Bengali (Bangladesh)"],
+        ["Main tenu pyaar karda haan", "Punjabi (transliterated)"],
+        ["Aš tave labai myliu", "Lithuanian (intense)"],
+        ["Es tevi ļoti mīlu", "Latvian (intense)"],
+        ["Ég elska þig mjög mikið", "Icelandic (intense)"],
+        ["Tá grá mór agam duit", "Irish (intense)"],
+        ["Inħobbok ħafna", "Maltese (intense)"],
+        ["Mwen renmen ou", "Haitian Creole"],
+        ["Mi ta stimabo", "Papiamento"],
+        ["Mi lobi yu", "Sranan Tongo"],
+        ["Nkwagala", "Luganda"],
+        ["Ndimakukonda", "Chichewa"],
+        ["Niwe natemwa", "Bemba"],
+        ["Waan ku jecelahay", "Somali"],
+        ["A hụrụ m gị n'anya", "Igbo"],
+        ["Mo ní ìfẹ́ ẹ", "Yoruba"],
+        ["Ina son ka", "Hausa"],
+        ["Medɔ wo", "Akan (Twi)"],
+        ["Me lɔ̃ wò", "Ewe"],
+        ["Beg naa la", "Wolof"],
+        ["Nalingi yo", "Lingala"],
+        ["Ndi a ni funa", "Venda"],
+        ["Ke a go rata haholo", "Northern Sotho"],
+        ["Ngiyakutsandza", "Swazi"],
+        ["Nkhukutemwa", "Tumbuka"],
+        ["Ondi ku hole", "Oshiwambo"],
+        ["Na ku lata", "Lozi"],
+        ["Nkwagala nnyo", "Luganda (intense)"],
+        ["Ni miku", "Efik"],
+        ["Aheri", "Dholuo"],
+        ["Djiba han djibameu ba", "Bété"],
+        ["Nta amabo", "Cape Verdean Creole"],
+        ["Mme ama fi", "Efik (variant)"],
+        ["Hu guiaya hao", "Chamorro"],
+        ["Ai tong ngonuk", "Chuukese"],
+        ["I tangiriko", "Gilbertese"],
+        ["Au domoni iko", "Fijian"],
+        ["Hanga rahi au kia koe", "Rapa Nui"],
+        ["A kultoir er kau", "Palauan"],
+        ["Gu ba'adag em", "Yapese"],
+        ["Hau hadomi ó", "Tetum"],
+        ["Aro'a atu ia koe", "Cook Islands Māori"],
+        ["Au lomani iko", "Rotuman"],
+        ["Nimitztlazohtla", "Nahuatl"],
+        ["Munsmawa", "Aymara"],
+        ["Kuyayki", "Quechua"],
+        ["Rohayhu", "Guarani"],
+        ["Inche ayün eymi", "Mapudungun"],
+        ["In k'áatech", "Yucatec Maya"],
+        ["Nadxiie lii", "Zapotec"],
+        ["Jk'anojot", "Tzotzil"],
+        ["Nimitznequi", "Classical Nahuatl"],
+        ["Aisü tapüla pia", "Wayuu"],
+        ["Nəsƛ̕éʔ cxʷ", "Klallam"],
+        ["Txin yaxtakuq", "Aleut"],
+        ["Biixoo3é3en", "Arapaho"],
+        ["ᎬᎨᏳᎢ", "Cherokee"],
+        ["Thečhíȟila", "Lakota"],
+        ["Gönóöhgwa’", "Seneca"],
+        ["Go-nóhkwa’", "Cayuga"],
+        ["Chi hollo li", "Choctaw"],
+        ["Ecenokecis", "Muscogee"],
+        ["Diiawachisshik", "Crow"],
+        ["ᑭᓵᑭᐦᐃᑎᐣ", "Cree"],
+        ["Gizhawenimin", "Ojibwe"],
+        ["Konoronhkwa", "Mohawk"],
+        ["Kisakihitin", "Atikamekw"],
+        ["Pihan'in 'emey", "Serrano"],
+        ["Ninasaywelamay", "Shawnee"],
+        ["Ketepânene", "Sauk"],
+        ["Moo ?ams ni stinta", "Klamath"],
+        ["Némehotȧtse", "Cheyenne"],
+        ["Munsmawa", "Aymara (alternate form)"],
+        ["Maite zaitut", "Basque"],
+        ["Karout a ran ac'hanout", "Breton"],
+        ["My a'th kar", "Cornish"],
+        ["Ti tengu caru", "Corsican"],
+        ["Ámote", "Galician"],
+        ["Quiérote", "Asturian"],
+        ["T'aimo", "Aragonese"],
+        ["Je la z'aime", "Gallo"],
+        ["Que t'aimi", "Gascon"],
+        ["Ti vuei ben", "Friulian"],
+        ["T'amo", "Sardinian"],
+        ["Mi te amo", "Occitan"],
+        ["Dji t'veû vol'tî", "Walloon"],
+        ["Ich hàbb dir lïab", "Alsatian"],
+        ["I liab di", "Bavarian"],
+        ["Ich liib dich", "Swiss German"],
+        ["Ech hunn dech gär", "Luxembourgish"],
+        ["Ik hald van dich", "Limburgish"],
+        ["Ik heff di leev", "Low Saxon"],
+        ["Iek hääb die ljoo", "Saterland Frisian"],
+        ["Jeu carezel tei", "Romansh"],
+        ["Suvaičen sinuu", "Livvi-Karelian"],
+        ["Mån æhtsáv duv", "Lule Sami"],
+        ["Manne datnem eahtsam", "Southern Sami"],
+        ["Mun ráhkistan du", "Northern Sami"],
+        ["Asavakkit", "Greenlandic"],
+        ["Nagligivagit", "Inuktitut"],
+        ["Nakuaġigikpiñ", "Iñupiaq"],
+        ["Kenkamken", "Yup'ik"],
+        ["Aš tave myliu", "Lithuanian (standard)"],
+        ["Men seni süyöm", "Kyrgyz (transliterated)"],
+        ["Мін сені сүйемін", "Kazakh (alternate script)"],
+        ["Мен сени сүйөм", "Kyrgyz (Cyrillic)"],
+        ["Minä rakastan sinua", "Karelian"],
+        ["Ig tyttjer um dig", "Elfdalian"],
+        ["A Kultoir er Kau", "Palauan (standard)"],
+        ["Naku penda", "Luganda (alternate phrase)"],
+        ["Nta adorabu", "Cape Verdean Creole (affectionate)"],
+        ["Rojhayhû", "Guarani (alternate spelling)"],
+        ["Amo-te", "Portuguese (Portugal)"],
+        ["Eu te amo muito", "Portuguese (Brazil, intense)"],
+        ["Te quiero con todo mi corazón", "Spanish (romantic)"],
+        ["Je t'aime énormément", "French (romantic)"],
+        ["Ti amo con tutto il cuore", "Italian (romantic)"],
+        ["Ich liebe dich von ganzem Herzen", "German (romantic)"],
+        ["愛してるよ", "Japanese (informal)"],
+        ["사랑해요", "Korean (polite)"],
+        ["我爱你一生一世", "Chinese (lifelong love)"],
+        ["Te iubesc din toată inima", "Romanian (romantic)"],
+        ["Ljubim te iz vsega srca", "Slovenian (romantic)"],
+        ["Volim te svim srcem", "Bosnian (romantic)"],
+        ["Volim te od srca", "Montenegrin (romantic)"],
+        ["Miluji tě z celého srdce", "Czech (romantic)"],
+        ["Kocham cię całym sercem", "Polish (romantic)"],
+        ["Szeretlek teljes szívemből", "Hungarian (romantic)"],
+        ["Rakastan sinua koko sydämestäni", "Finnish (romantic)"],
+        ["Jeg elsker deg av hele mitt hjerte", "Norwegian (romantic)"],
+        ["Jag älskar dig av hela mitt hjärta", "Swedish (romantic)"],
+        ["Jeg elsker dig af hele mit hjerte", "Danish (romantic)"],
+        ["Ik hou van je met heel mijn hart", "Dutch (romantic)"],
+        ["Ik hâld fan dy mei myn hiele hert", "West Frisian (romantic)"],
+        ["Tha gaol agam ort le m' uile chridhe", "Scottish Gaelic (romantic)"],
+        ["Rwy'n dy garu â'm holl galon", "Welsh (romantic)"],
+        ["Tá grá agam duit le mo chroí go léir", "Irish (romantic)"],
+        ["Mahal kita nang buong puso", "Tagalog (romantic)"],
+        ["Saya mencintaimu sepenuh hati", "Indonesian (romantic)"],
+        ["Aku mencintaimu sepenuh hati", "Malay (romantic)"],
+        ["ฉันรักคุณจากใจจริง", "Thai (romantic)"],
+        ["Tôi yêu em bằng cả trái tim", "Vietnamese (romantic)"],
+        ["أحبك من كل قلبي", "Arabic (romantic)"],
+        ["אני אוהב אותך בכל ליבי", "Hebrew (romantic)"],
+        ["از صمیم قلب دوستت دارم", "Persian (romantic)"],
+        ["मैं तुम्हें दिल से प्यार करता हूँ", "Hindi (romantic)"],
+        ["আমি তোমাকে মন থেকে ভালোবাসি", "Bengali (romantic)"],
+        ["ਮੈਂ ਤੈਨੂੰ ਦਿਲੋਂ ਪਿਆਰ ਕਰਦਾ ਹਾਂ", "Punjabi (romantic)"],
+        ["Ninakupenda kwa moyo wangu wote", "Swahili (romantic)"],
+        ["Ngiyakuthanda ngenhliziyo yami yonke", "Zulu (romantic)"],
+        ["Ndiyakuthanda ngentliziyo yam yonke", "Xhosa (romantic)"],
+        ["Ndinokuda nemoyo wangu wose", "Shona (romantic)"],
+        ["Mo nífẹ̀ẹ́ rẹ pẹ̀lú gbogbo ọkàn mi", "Yoruba (romantic)"],
+        ["A hụrụ m gị n'anya site n'obi m dum", "Igbo (romantic)"],
+        ["Medɔ wo fi me koma nyinaa mu", "Akan (romantic)"],
+        ["Mi amas vin tutkore", "Esperanto (romantic)"],
+        ["Te amo con todo mi corazón", "Latin American Spanish (romantic)"],
+        ["Ti amo con tutto il mio cuore", "Italian (heartfelt)"],
+        ["Je t'aime de tout mon être", "French (heartfelt)"],
+        ["Eu amo você de todo o coração", "Brazilian Portuguese (heartfelt)"],
+        ["Ik hou zielsveel van jou", "Dutch (deep affection)"],
+        ["Jag älskar dig så mycket", "Swedish (deep affection)"],
+        ["Jeg elsker deg så høyt", "Norwegian (deep affection)"],
+        ["Kocham cię nad życie", "Polish (deep affection)"],
+        ["Te quiero muchísimo", "Spanish (deep affection)"],
+        ["Je t'aime plus que tout", "French (deep affection)"],
+        ["Ti amo più di ogni cosa", "Italian (deep affection)"],
+        ["Ich liebe dich über alles", "German (deep affection)"],
+        ["愛してる、大好き", "Japanese (deep affection)"],
+        ["너를 정말 사랑해", "Korean (deep affection)"],
+        ["我真的很爱你", "Chinese (deep affection)"],
+        ["Mahal na mahal na mahal kita", "Tagalog (very intense)"],
+        ["Te iubesc din tot sufletul", "Romanian (deep affection)"],
+        ["Seni çok seviyorum", "Turkish (deep affection)"],
+        ["أحبك من أعماق قلبي", "Arabic (deep affection)"],
+        ["אני אוהבת אותך מכל הלב", "Hebrew (deep affection)"],
+        ["دوستت دارم از ته قلبم", "Persian (deep affection)"],
+        ["मैं तुमसे बहुत प्यार करता हूँ", "Hindi (deep affection)"],
+        ["আমি তোমাকে অনেক ভালোবাসি", "Bengali (deep affection)"],
+        ["Nakupenda kwa dhati", "Swahili (sincere love)"],
+        ["Nkwagala nnyo", "Luganda (deep affection)"],
+        ["Waan ku jeclahay", "Somali (affectionate)"],
+        ["Nalingi yo mingi", "Lingala (deep affection)"],
+        ["Aroha nui ki a koe", "Māori (deep affection)"],
+        ["Ou te alofa tele ia te oe", "Samoan (deep affection)"],
+        ["Au domoni iko vakalevu", "Fijian (deep affection)"],
+        ["Hanga nui au kia koe", "Rapa Nui (deep affection)"],
+        ["Rojhayhû eterei", "Guarani (intense)"],
+        ["Kuyayki ancha", "Quechua (intense)"],
+        ["In k'áatech jach", "Yucatec Maya (intense)"],
+        ["Maite zaitut bihotz-bihotzez", "Basque (romantic)"],
+        ["Ti tengu caru assai", "Corsican (intense)"],
+        ["Ámote moito", "Galician (intense)"],
+        ["Quiérote muncho", "Asturian (intense)"],
+        ["Te vògio ben tanto", "Venetian (intense)"],
+        ["Mi amas vin tre multe", "Esperanto (intense)"],
+      ];
+
+      console.log(languages.length); // 296
+
+      const calendar = document.getElementById("calendar");
+      const status = document.getElementById("status");
+
+      const start = parseDate(START_DATE);
+      const end = parseDate(END_DATE);
+
+      function parseDate(value) {
+        const [year, month, day] = value.split("-").map(Number);
+        return new Date(year, month - 1, day);
+      }
+
+      function dateKey(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+
+        return `${year}-${month}-${day}`;
+      }
+
+      function isInRange(date) {
+        return date >= start && date <= end;
+      }
+
+      function sameDay(a, b) {
+        return dateKey(a) === dateKey(b);
+      }
+
+      function makeElement(tag, className, text) {
+        const element = document.createElement(tag);
+
+        if (className) {
+          element.className = className;
+        }
+
+        if (text !== undefined) {
+          element.textContent = text;
+        }
+
+        return element;
+      }
+
+      function getLoveMessage(date) {
+        const daysSinceStart = Math.round(
+          (date.getTime() - start.getTime()) / 86400000,
+        );
+
+        return languages[daysSinceStart % languages.length];
+      }
+
+      function renderCalendar() {
+        calendar.replaceChildren();
+
+        const firstMonth = new Date(start.getFullYear(), start.getMonth(), 1);
+
+        const lastMonth = new Date(end.getFullYear(), end.getMonth(), 1);
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+        for (
+          let monthDate = new Date(firstMonth);
+          monthDate <= lastMonth;
+          monthDate.setMonth(monthDate.getMonth() + 1)
+        ) {
+          const year = monthDate.getFullYear();
+          const monthIndex = monthDate.getMonth();
+
+          const monthSection = makeElement("section", "month");
+
+          const monthTitle = makeElement(
+            "div",
+            "month-title",
+            "♥ " +
+              monthDate.toLocaleDateString("en-GB", {
+                month: "long",
+                year: "numeric",
+              }) +
+              " ♥",
+          );
+
+          monthSection.appendChild(monthTitle);
+
+          const weekdayRow = makeElement("div", "weekdays");
+
+          weekdays.forEach((day) => {
+            weekdayRow.appendChild(makeElement("div", "weekday", day));
+          });
+
+          monthSection.appendChild(weekdayRow);
+
+          const daysGrid = makeElement("div", "days");
+
+          const firstWeekday = new Date(year, monthIndex, 1).getDay();
+          const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+
+          for (let i = 0; i < firstWeekday; i++) {
+            daysGrid.appendChild(makeElement("div", "day empty"));
+          }
+
+          for (let dayNumber = 1; dayNumber <= daysInMonth; dayNumber++) {
+            const date = new Date(year, monthIndex, dayNumber);
+            const dayCell = makeElement("div", "day");
+
+            if (!isInRange(date)) {
+              dayCell.classList.add("empty");
+              daysGrid.appendChild(dayCell);
+              continue;
+            }
+
+            if (sameDay(date, today)) {
+              dayCell.classList.add("today");
+            } else if (date < today) {
+              dayCell.classList.add("past");
+            } else {
+              dayCell.classList.add("future");
+            }
+
+            // Special hearts
+            if (sameDay(date, start) || sameDay(date, end)) {
+              dayCell.classList.add("special");
+            }
+
+            const [phrase, language] = getLoveMessage(date);
+
+            const number = makeElement("div", "day-number", String(dayNumber));
+
+            const message = makeElement("div", "day-message", phrase);
+
+            const languageName = makeElement("div", "day-language", language);
+
+            dayCell.append(number, message, languageName);
+
+            dayCell.title =
+              date.toLocaleDateString("en-GB") +
+              " — " +
+              phrase +
+              " (" +
+              language +
+              ")";
+
+            daysGrid.appendChild(dayCell);
+          }
+
+          // Keep each month aligned in complete calendar week
+          while (daysGrid.children.length % 7 !== 0) {
+            daysGrid.appendChild(makeElement("div", "day empty"));
+          }
+
+          monthSection.appendChild(daysGrid);
+          calendar.appendChild(monthSection);
+        }
+      }
+
+      document.getElementById("todayBtn").addEventListener("click", () => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        if (!isInRange(today)) {
+          status.textContent =
+            "Today's date is outside this calendar's date range. ♥";
+          return;
+        }
+
+        const todayCell = Array.from(document.querySelectorAll(".day")).find(
+          (cell) => {
+            const number = cell.querySelector(".day-number");
+
+            if (!number) return false;
+
+            const monthSection = cell.closest(".month");
+            const title =
+              monthSection.querySelector(".month-title").textContent;
+
+            return (
+              title.includes(
+                today.toLocaleDateString("en-GB", {
+                  month: "long",
+                  year: "numeric",
+                }),
+              ) && Number(number.textContent) === today.getDate()
+            );
+          },
+        );
+
+        if (todayCell) {
+          todayCell.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+
+          status.textContent =
+            "Today's message: " + getLoveMessage(today).join(" — ") + " ♥";
+        }
+      });
+
+      document.getElementById("printBtn").addEventListener("click", () => {
+        window.print();
+      });
+
+      document.getElementById("heartBtn").addEventListener("click", () => {
+        const hearts = ["♥", "♡", "💕", "💗", "💖", "💘"];
+        const heart = hearts[Math.floor(Math.random() * hearts.length)];
+
+        status.textContent =
+          heart +
+          " " +
+          getLoveMessage(
+            new Date(
+              Math.max(
+                start.getTime(),
+                Math.min(end.getTime(), new Date().getTime()),
+              ),
+            ),
+          ).join(" — ") +
+          " " +
+          heart +
+          " You are loved every day. " +
+          heart;
+      });
+
+      renderCalendar();
+    </script>
+  </body>
+</html>
